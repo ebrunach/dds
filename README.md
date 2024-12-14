@@ -86,6 +86,13 @@ Docs
 ====
 The DDS library interface is documented. You find the docs, including a Markdown version which you can read online, in the /doc folder.  The Markdown version has not been updated since v2.8.4.
 
+Compilation command line
+====
+
+```
+emcc ./src/*.cpp main.c -o a.out.js -sMODULARIZE=1 -sEXPORT_NAME='createFactory' -sEXPORTED_FUNCTIONS='["_dds_init", "_do_dds_solve_board", "_malloc", "_free"]' -sEXPORTED_RUNTIME_METHODS='["ccall", "cwrap", "getValue", "allocateUTF8"]' -sNO_EXIT_RUNTIME=1 -sINITIAL_MEMORY=52428800
+```
+
 Bugs
 ====
 Version 2.9.0 has no known bugs.
