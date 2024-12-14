@@ -98,6 +98,8 @@ void STDCALL SetResources(
   // - 70% of free memory
   // - 1800 MB if we're on a 32-bit system.
 
+  ncores = 1;
+  kilobytesFree = 1024 * 50;
   const int memMaxGivenMB = (maxMemoryMB == 0 ? 1000000 : 
     static_cast<int>(1.3 * maxMemoryMB));
   const int memMaxFreeMB = static_cast<int>(0.70 * kilobytesFree / 1024);

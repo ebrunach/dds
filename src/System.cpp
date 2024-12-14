@@ -232,6 +232,8 @@ void System::GetHardware(
     kilobytesFree = 1024 * 1024; // guess 1GB
 
   ncores = sysconf(_SC_NPROCESSORS_ONLN);
+  ncores = 1;
+  kilobytesFree = 1024 * 50;
   return;
 #endif
 }

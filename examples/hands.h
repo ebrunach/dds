@@ -26,22 +26,22 @@ extern int playSuit[3][52];
 extern int playRank[3][52];
 
 
-void PrintFut(char title[], futureTricks * fut);
+void PrintFut(char title[], struct futureTricks * fut);
 void equals_to_string(int equals, char * res);
-bool CompareFut(futureTricks * fut, int handno, int solutions);
+bool CompareFut(struct futureTricks * fut, int handno, int solutions);
 
-void SetTable(ddTableResults * table, int handno);
-bool CompareTable(ddTableResults * table, int handno);
-void PrintTable(ddTableResults * table);
+void SetTable(struct ddTableResults * table, int handno);
+bool CompareTable(struct ddTableResults * table, int handno);
+void PrintTable(struct ddTableResults * table);
 
-bool ComparePar(parResults * par, int handno);
-bool CompareDealerPar(parResultsDealer * par, int handno);
-void PrintPar(parResults * par);
-void PrintDealerPar(parResultsDealer * par);
+bool ComparePar(struct parResults * par, int handno);
+bool CompareDealerPar(struct parResultsDealer * par, int handno);
+void PrintPar(struct parResults * par);
+void PrintDealerPar(struct parResultsDealer * par);
 
-bool ComparePlay(solvedPlay * trace, int handno);
-void PrintBinPlay(playTraceBin * play, solvedPlay * solved);
-void PrintPBNPlay(playTracePBN * play, solvedPlay * solved);
+bool ComparePlay(struct solvedPlay * trace, int handno);
+void PrintBinPlay(struct playTraceBin * play, struct solvedPlay * solved);
+void PrintPBNPlay(struct playTracePBN * play, struct solvedPlay * solved);
 
 
 void PrintHand(char title[], 
