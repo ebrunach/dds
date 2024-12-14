@@ -44,6 +44,18 @@ Module['ready'] = new Promise(function(resolve, reject) {
       }
     
 
+      if (!Object.getOwnPropertyDescriptor(Module['ready'], '_do_calc_par_results')) {
+        Object.defineProperty(Module['ready'], '_do_calc_par_results', { configurable: true, get: function() { abort('You are getting _do_calc_par_results on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+        Object.defineProperty(Module['ready'], '_do_calc_par_results', { configurable: true, set: function() { abort('You are setting _do_calc_par_results on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+      }
+    
+
+      if (!Object.getOwnPropertyDescriptor(Module['ready'], '_do_calc_all_par_results')) {
+        Object.defineProperty(Module['ready'], '_do_calc_all_par_results', { configurable: true, get: function() { abort('You are getting _do_calc_all_par_results on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+        Object.defineProperty(Module['ready'], '_do_calc_all_par_results', { configurable: true, set: function() { abort('You are setting _do_calc_all_par_results on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
+      }
+    
+
       if (!Object.getOwnPropertyDescriptor(Module['ready'], '_malloc')) {
         Object.defineProperty(Module['ready'], '_malloc', { configurable: true, get: function() { abort('You are getting _malloc on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
         Object.defineProperty(Module['ready'], '_malloc', { configurable: true, set: function() { abort('You are setting _malloc on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js') } });
@@ -5133,6 +5145,12 @@ var _dds_init = Module["_dds_init"] = createExportWrapper("dds_init");
 
 /** @type {function(...*):?} */
 var _do_dds_solve_board = Module["_do_dds_solve_board"] = createExportWrapper("do_dds_solve_board");
+
+/** @type {function(...*):?} */
+var _do_calc_par_results = Module["_do_calc_par_results"] = createExportWrapper("do_calc_par_results");
+
+/** @type {function(...*):?} */
+var _do_calc_all_par_results = Module["_do_calc_all_par_results"] = createExportWrapper("do_calc_all_par_results");
 
 /** @type {function(...*):?} */
 var ___errno_location = Module["___errno_location"] = createExportWrapper("__errno_location");

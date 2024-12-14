@@ -81,3 +81,58 @@ EMSCRIPTEN_KEEPALIVE int do_dds_solve_board(int contract_bid,
 
     return ft.nodes;
 }
+
+/*
+struct ddTableDealsPBN {
+    int noOfTables; // Number of DD table deals in structure, at most MAXNOOFTABLES
+    struct ddTableDealPBN deals[X]; // X = MAXNOOFTABLES * DDS_STRAINS
+};
+
+struct ddTableDealPBN {
+    char cards[80];
+}
+
+struct parResults {
+    char parScore[2][16];
+    char parContractsString[2][128];
+};*/
+
+EMSCRIPTEN_KEEPALIVE int do_calc_par_results(const char* pbn_remain_cards, struct parResults *presp){
+    struct ddTableDealPBN tableDealPBN;
+    strcpy(tableDealPBN.cards, pbn_remain_cards);
+
+    // Calculer la table de résultats double-dummy
+    struct ddTableResults tablep;
+    CalcDDtablePBN(tableDealPBN, &tablep);
+
+    Par(&tablep, presp, 0);
+    return 0;
+}
+
+EMSCRIPTEN_KEEPALIVE int do_calc_all_par_results(const char* deals, int noOfTables, struct allParResults *presp){
+    if (!deals || !presp) {
+        printf("Invalid input pointers\n");
+        return -1;
+    }
+
+    struct ddTableDealsPBN dealsPBN;
+    dealsPBN.noOfTables = noOfTables;
+    for (int i = 0; i < noOfTables; i++){
+        struct ddTableDealPBN tableDealPBN;
+        strncpy(tableDealPBN.cards, deals + i * 80, 80);
+        dealsPBN.deals[i] = tableDealPBN;
+        printf("dealsPBN.deals[%d].cards: %s\n", i, dealsPBN.deals[i].cards);
+    }
+
+
+    struct ddTablesRes resp;
+    int mode[5] = {0, 0, 0, 0, 0};
+
+    int result = CalcAllTablesPBN(&dealsPBN, 0, mode, &resp, presp);
+    if (result != RETURN_NO_FAULT) {
+        printf("CalcAllTablesPBN failed with error code: %d\n", result);
+        return result;
+    }
+
+    return 0;
+}
