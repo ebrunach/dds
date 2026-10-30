@@ -43,7 +43,24 @@ factory.then((instance) => {
         return;
     }
 
-    instance._do_calc_all_par_results(deals_string_ptr, noOfTables, all_par_results_ptr);
+    var mode_ptr = instance._malloc(5 * 4);
+    if (!mode_ptr) {
+        console.error("Failed to allocate memory for mode_ptr");
+        instance._free(deals_string_ptr);
+        instance._free(all_par_results_ptr);
+        return;
+    }
+
+    var ddTablesRes_ptr = instance._malloc(instance._get_dd_tables_res_size());
+    if (!ddTablesRes_ptr) {
+        console.error("Failed to allocate memory for ddTablesRes_ptr");
+        instance._free(deals_string_ptr);
+        instance._free(all_par_results_ptr);
+        instance._free(mode_ptr);
+        return;
+    }
+
+    instance._do_calc_all_par_results(deals_string_ptr, noOfTables, mode_ptr, all_par_results_ptr, ddTablesRes_ptr);
 
     var allParResults = [];
     for (var i = 0; i < noOfTables; i++) {
