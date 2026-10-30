@@ -28,7 +28,7 @@ var readyPromise = new Promise((resolve, reject) => {
   readyPromiseResolve = resolve;
   readyPromiseReject = reject;
 });
-["_dds_init","_do_dds_solve_board","_do_calc_par_results","_do_calc_all_par_results","_get_all_par_results_size","_get_par_results_size","_get_par_score_offset","_get_par_contracts_offset","_malloc","_free","_memory","___indirect_function_table","onRuntimeInitialized"].forEach((prop) => {
+["_dds_init","_do_dds_solve_board","_do_calc_par_results","_do_calc_all_par_results","_get_all_par_results_size","_get_par_results_size","_get_par_score_offset","_get_par_contracts_offset","_malloc","_free","_get_dd_tables_res_size","_memory","___indirect_function_table","onRuntimeInitialized"].forEach((prop) => {
   if (!Object.getOwnPropertyDescriptor(readyPromise, prop)) {
     Object.defineProperty(readyPromise, prop, {
       get: () => abort('You are getting ' + prop + ' on the Promise object, instead of the instance. Use .then() to get called back with the instance, see the MODULARIZE docs in src/settings.js'),
@@ -4380,6 +4380,7 @@ function dbg(...args) {
 
 
 
+
   FS.createPreloadedFile = FS_createPreloadedFile;
   FS.staticInit();
   // Set module methods based on EXPORTED_RUNTIME_METHODS
@@ -4429,10 +4430,11 @@ var _get_all_par_results_size = Module['_get_all_par_results_size'] = createExpo
 var _get_par_results_size = Module['_get_par_results_size'] = createExportWrapper('get_par_results_size', 0);
 var _get_par_score_offset = Module['_get_par_score_offset'] = createExportWrapper('get_par_score_offset', 0);
 var _get_par_contracts_offset = Module['_get_par_contracts_offset'] = createExportWrapper('get_par_contracts_offset', 0);
+var _get_dd_tables_res_size = Module['_get_dd_tables_res_size'] = createExportWrapper('get_dd_tables_res_size', 0);
 var _dds_init = Module['_dds_init'] = createExportWrapper('dds_init', 0);
 var _do_dds_solve_board = Module['_do_dds_solve_board'] = createExportWrapper('do_dds_solve_board', 7);
 var _do_calc_par_results = Module['_do_calc_par_results'] = createExportWrapper('do_calc_par_results', 2);
-var _do_calc_all_par_results = Module['_do_calc_all_par_results'] = createExportWrapper('do_calc_all_par_results', 3);
+var _do_calc_all_par_results = Module['_do_calc_all_par_results'] = createExportWrapper('do_calc_all_par_results', 5);
 var _fflush = createExportWrapper('fflush', 1);
 var _strerror = createExportWrapper('strerror', 1);
 var __emscripten_tempret_set = createExportWrapper('_emscripten_tempret_set', 1);
@@ -4456,6 +4458,7 @@ var dynCall_iiiiiijj = Module['dynCall_iiiiiijj'] = createExportWrapper('dynCall
 
 Module['ccall'] = ccall;
 Module['cwrap'] = cwrap;
+Module['setValue'] = setValue;
 Module['getValue'] = getValue;
 Module['stringToUTF8'] = stringToUTF8;
 Module['lengthBytesUTF8'] = lengthBytesUTF8;
@@ -4671,7 +4674,6 @@ var unexportedSymbols = [
   'getCFunc',
   'freeTableIndexes',
   'functionsInTableMap',
-  'setValue',
   'PATH',
   'PATH_FS',
   'UTF8Decoder',

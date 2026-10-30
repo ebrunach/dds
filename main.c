@@ -22,6 +22,10 @@ EMSCRIPTEN_KEEPALIVE int get_par_contracts_offset() {
     return (int)((char*)&dummy.parContractsString - (char*)&dummy);
 }
 
+EMSCRIPTEN_KEEPALIVE int get_dd_tables_res_size() {
+    return sizeof(struct ddTablesRes);
+}
+
 EMSCRIPTEN_KEEPALIVE int dds_init()
 {
     SetResources(40, 1);
@@ -126,7 +130,7 @@ EMSCRIPTEN_KEEPALIVE int do_calc_par_results(const char* pbn_remain_cards, struc
     return 0;
 }
 
-EMSCRIPTEN_KEEPALIVE int do_calc_all_par_results(const char* deals, int noOfTables, struct allParResults *presp){
+EMSCRIPTEN_KEEPALIVE int do_calc_all_par_results(const char* deals, int noOfTables, int mode[5], struct allParResults *presp, struct ddTablesRes *resp) {
     if (!deals || !presp) {
         printf("Invalid input pointers\n");
         return -1;
@@ -141,18 +145,9 @@ EMSCRIPTEN_KEEPALIVE int do_calc_all_par_results(const char* deals, int noOfTabl
         printf("dealsPBN.deals[%d].cards: %s\n", i, dealsPBN.deals[i].cards);
     }
 
-    // Allocation sur le tas pour éviter un stack overflow
-    struct ddTablesRes *resp = (struct ddTablesRes *)malloc(sizeof(struct ddTablesRes));
-    if (!resp) {
-        printf("Failed to allocate memory for resp\n");
-        return -1;
-    }
-
-    int mode[5] = {0, 0, 0, 0, 0};
 
     int result = CalcAllTablesPBN(&dealsPBN, 0, mode, resp, presp);
     
-    free(resp); // Libération de la mémoire
 
     if (result != RETURN_NO_FAULT) {
         printf("CalcAllTablesPBN failed with error code: %d\n", result);
