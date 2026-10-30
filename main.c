@@ -4,6 +4,23 @@
 #include <emscripten/emscripten.h>
 #include "src/dds.h"
 
+EMSCRIPTEN_KEEPALIVE int get_all_par_results_size() {
+    return sizeof(struct allParResults);
+}
+
+EMSCRIPTEN_KEEPALIVE int get_par_results_size() {
+    return sizeof(struct parResults);
+}
+
+EMSCRIPTEN_KEEPALIVE int get_par_score_offset() {
+    struct parResults dummy;
+    return (int)((char*)&dummy.parScore - (char*)&dummy);
+}
+
+EMSCRIPTEN_KEEPALIVE int get_par_contracts_offset() {
+    struct parResults dummy;
+    return (int)((char*)&dummy.parContractsString - (char*)&dummy);
+}
 
 EMSCRIPTEN_KEEPALIVE int dds_init()
 {
@@ -124,11 +141,19 @@ EMSCRIPTEN_KEEPALIVE int do_calc_all_par_results(const char* deals, int noOfTabl
         printf("dealsPBN.deals[%d].cards: %s\n", i, dealsPBN.deals[i].cards);
     }
 
+    // Allocation sur le tas pour éviter un stack overflow
+    struct ddTablesRes *resp = (struct ddTablesRes *)malloc(sizeof(struct ddTablesRes));
+    if (!resp) {
+        printf("Failed to allocate memory for resp\n");
+        return -1;
+    }
 
-    struct ddTablesRes resp;
     int mode[5] = {0, 0, 0, 0, 0};
 
-    int result = CalcAllTablesPBN(&dealsPBN, 0, mode, &resp, presp);
+    int result = CalcAllTablesPBN(&dealsPBN, 0, mode, resp, presp);
+    
+    free(resp); // Libération de la mémoire
+
     if (result != RETURN_NO_FAULT) {
         printf("CalcAllTablesPBN failed with error code: %d\n", result);
         return result;
