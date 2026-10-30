@@ -90,7 +90,7 @@ Compilation command line
 ====
 
 ```
-emcc ./src/*.cpp main.c -o a.out.js -sMODULARIZE=1 -sEXPORT_NAME='createFactory' -sEXPORTED_FUNCTIONS='["_dds_init", "_do_dds_solve_board", "_malloc", "_free"]' -sEXPORTED_RUNTIME_METHODS='["ccall", "cwrap", "getValue", "allocateUTF8"]' -sNO_EXIT_RUNTIME=1 -sINITIAL_MEMORY=52428800
+emcc ./src/*.cpp main.c -o a.out.js   -sMODULARIZE=1   -sEXPORT_NAME='createFactory'   -sEXPORTED_FUNCTIONS='["_dds_init", "_do_dds_solve_board", "_do_calc_par_results", "_do_calc_all_par_results", "_get_all_par_results_size", "_get_par_results_size", "_get_par_score_offset", "_get_par_contracts_offset", "_malloc", "_free", "_get_dd_tables_res_size"]'   -sEXPORTED_RUNTIME_METHODS='["ccall", "cwrap", "setValue", "getValue", "lengthBytesUTF8", "stringToUTF8"]'   -sNO_EXIT_RUNTIME=1   -sINITIAL_MEMORY=52428800   -sALLOW_MEMORY_GROWTH=1 -sSTACK_SIZE=5242880
 ```
 
 Bugs
