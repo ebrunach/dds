@@ -14,8 +14,8 @@ factory.then((instance) => {
 
     // Solve deals
     var deals = [
-        "N:43.AQT4.842.AT94 AKT95.53.AQT6.Q3 Q2.KJ9.KJ97.K865 J876.8762.53.J72",
-        "N:A4.AQT4.842.AT94 KT953.53.AQT6.Q3 Q2.KJ9.KJ97.K865 J876.8762.53.J72"
+        "N:3478T..26QA.45JQ QKA.348.389.67TK 269.26Q.4JK.238A 5J.579TJKA.57T.9",
+        //"N:A4.AQT4.842.AT94 KT953.53.AQT6.Q3 Q2.KJ9.KJ97.K865 J876.8762.53.J72"
     ];
 
     var deals_string = deals.map(deal => deal.padEnd(80, ' ')).join('');
@@ -60,8 +60,14 @@ factory.then((instance) => {
         return;
     }
 
+    var mode = [0, 0, 0, 0, 0];
+    for (var i = 0; i < 5; i++) {
+        instance.setValue(mode_ptr + (i * 4), mode[i], 'i32');
+    }
+
     instance._do_calc_all_par_results(deals_string_ptr, noOfTables, mode_ptr, all_par_results_ptr, ddTablesRes_ptr);
 
+    // gestion de allParResults
     var allParResults = [];
     for (var i = 0; i < noOfTables; i++) {
         // Dans struct allParResults, les tableaux de résultats sont indexés par table (souvent via un tableau interne 'res')
@@ -95,6 +101,23 @@ factory.then((instance) => {
 
     console.log("All Par Results:", allParResults);
 
+
+    // gestion de ddTablesRes
+    var ddTablesRes = {};
+    var ddTable = [];
+    var ddTablesResSize = instance._get_dd_tables_res_size();
+    for (var j = 0; j < noOfTables; j++) {
+        for (var k = 0; k < 5; k++) {
+            ddTable[k] = [0, 0, 0, 0];
+            if (mode[k] == 0) {
+                for (var l = 0; l < 4; l++) {
+                    ddTable[k][l] = instance.getValue(4 + ddTablesRes_ptr + j * 5 * 4 * 4 + k * 4 * 4 + l * 4, 'i32');
+                }
+            }
+        }
+        console.log("DD Tables Res:", ddTable);
+    }
+
     instance._free(all_par_results_ptr);
     instance._free(deals_string_ptr);
 });
@@ -108,7 +131,7 @@ factory.then((instance) => {
 
     // Solve deals
     var deals = [
-        "N:43.AQT4.842.AT94 AKT95.53.AQT6.Q3 Q2.KJ9.KJ97.K865 J876.8762.53.J72",
+        "N:3478T..26QA.45JQ QKA.348.389.67TK 269.26Q.4JK.238A 5J.579TJKA.57T.9",
         //"N:A4.AQT4.842.AT94 KT953.53.AQT6.Q3 Q2.KJ9.KJ97.K865 J876.8762.53.J72"
     ];
 
@@ -134,8 +157,8 @@ factory.then((instance) => {
     var OUTPUT_INTS = 26;
     var output_ptr = instance._malloc(OUTPUT_INTS * 4);
 
-    var contract_bid = 4;   // trump = bid % 5 -> 4 = No Trump
-    var hand_to_play = 1;   // 0=N, 1=E, 2=S, 3=W: East is on lead
+    var contract_bid = 2;   // 0=♣, 1=♦, 2=♥, 3=♠, 4=SA
+    var hand_to_play = 1;   // 0=N, 1=E, 2=S, 3=W 
     var NO_CARD = -1;       // no card played yet in the current trick
 
     var nodes = instance._do_dds_solve_board(
