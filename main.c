@@ -59,7 +59,7 @@ EMSCRIPTEN_KEEPALIVE int do_dds_solve_board(int contract_bid,
     dpbn.first = hand_to_play;  // straight copy
 
     int rb_trump = contract_bid % 5;
-    dpbn.trump = (rb_trump == 4) ? 4 : (3 - rb_trump);  // DDS encoding: 0=spades, 1=hearts, 2=diamonds, 3=clubs, 4=NT
+    dpbn.trump = rb_trump;  // DDS encoding: 0=spades, 1=hearts, 2=diamonds, 3=clubs, 4=NT
 
     // current trick
     translate_current_trick_card(currentTrick0, dpbn.currentTrickSuit + 0, dpbn.currentTrickRank + 0);

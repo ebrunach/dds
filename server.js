@@ -6,7 +6,7 @@ var wasmBinary = fs.readFileSync('./a.out.wasm');
 var createFactory = require('./a.out.js');
 var factory = createFactory({ wasmBinary: wasmBinary });
 
-
+/*
 factory.then((instance) => {
     console.log("DDS loaded");
     // Initialise DDS
@@ -120,7 +120,7 @@ factory.then((instance) => {
 
     instance._free(all_par_results_ptr);
     instance._free(deals_string_ptr);
-});
+});*/
 
 
 
@@ -131,7 +131,8 @@ factory.then((instance) => {
 
     // Solve deals
     var deals = [
-        "N:3478T..26QA.45JQ QKA.348.389.67TK 269.26Q.4JK.238A 5J.579TJKA.57T.9",
+        //"N:3478T..26QA.45JQ QKA.348.389.67TK 269.26Q.4JK.238A 5J.579TJKA.57T.9",
+        "N:3478T..26QA.45JQ QK.348.389.67TK 26.26Q.4JK.238A 5J.579TJKA.57T.9",
         //"N:A4.AQT4.842.AT94 KT953.53.AQT6.Q3 Q2.KJ9.KJ97.K865 J876.8762.53.J72"
     ];
 
@@ -157,13 +158,13 @@ factory.then((instance) => {
     var OUTPUT_INTS = 26;
     var output_ptr = instance._malloc(OUTPUT_INTS * 4);
 
-    var contract_bid = 2;   // 0=♣, 1=♦, 2=♥, 3=♠, 4=SA
-    var hand_to_play = 1;   // 0=N, 1=E, 2=S, 3=W 
+    var contract_bid = 3;   // 0=♣, 1=♦, 2=♥, 3=♠, 4=SA
+    var hand_to_play = 3;   // 0=N, 1=E, 2=S, 3=W 
     var NO_CARD = -1;       // no card played yet in the current trick
 
     var nodes = instance._do_dds_solve_board(
         contract_bid, hand_to_play,
-        NO_CARD, NO_CARD, NO_CARD,
+        51, 46, NO_CARD,
         pbn_ptr, output_ptr);
 
     // Output is pairs (card, score); card = (3 - suit) * 13 + (rank - 2), -1 = end
